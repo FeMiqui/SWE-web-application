@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <h4>Here is going to present the result of the queries!</h4>
+        <ul>
+            <li id="ans1"></li>
+            <li id="ans2"></li>
+            <li id="ans3"></li>
+            <li id="ans4"></li>
+            <li id="ans5"></li>
+            <li id="ans6"></li>
+            <li id="ans7"></li>
+            <li id="ans8"></li>
+        </ul>
+    </div>
+</body>
+<script>
+    const url =
+        'https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Public_Safety_WebMercator/MapServer/24/query?where=1%3D1&outFields=*&outSR=4326&f=json';
+    // fetch(url)
+    //     .then(res => res.json())
+    //     .then(text =>
+    //         res.map(function (attributes) {
+    //             console.log(attributes.CRASHID);
+    //         }));
+
+    getData(url);
+
+    async function getData(url) {
+        const response = await fetch(url);
+        const data = await response.json();
+        // console.log(data.features);
+        data.features.map(data => console.log(data.attributes))
+        // const arrOfPromises = data.CRASHID.map(item => console.log(item));
+        // return Promise.all(arrOfPromises);
+    }
+</script>
+
+</html>
