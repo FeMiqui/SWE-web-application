@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "node-fetch": "^3.0.0"
+  },
+  "name": "swe-webapp",
+  "version": "1.0.0",
+  "main": "fmiqui_assignment_1.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

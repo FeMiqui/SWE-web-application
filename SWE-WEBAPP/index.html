@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <h4>The results of the queries are going to be shown here!</h4>
+        <ul>
+            <li id="ans1"></li>
+            <li id="ans2"></li>
+            <li id="ans3"></li>
+            <li id="ans4"></li>
+            <li id="ans5"></li>
+            <li id="ans6"></li>
+            <li id="ans7"></li>
+            <li id="ans8"></li>
+        </ul>
+    </div>
+</body>
+<script>
+    const url =
+        'https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Public_Safety_WebMercator/MapServer/24/query?where=1%3D1&outFields=*&outSR=4326&f=json';
+    // fetch(url)
+    //     .then(res => res.json())
+    //     .then(text =>
+    //         res.map(function (attributes) {
+    //             console.log(attributes.CRASHID);
+    //         }));
+
+    getData(url);
+    /*
+            List of Attributes:
+
+    ADDRESS: "2000 MASSACHUSETTS AVENUE NW"
+    BICYCLISTSIMPAIRED: 0
+    BLOCKKEY: "1d3cffb4c4fe0df4bb0e060bc8b23c8e"
+    CCN: "11127315"
+    CRIMEID: "26640700"
+    DRIVERSIMPAIRED: 0
+    EVENTID: "{16EE45DB-F04F-4339-A63F-B2E7AF81699A}"
+    FATALPASSENGER: 0
+    FATAL_BICYCLIST: 0
+    FATAL_DRIVER: 0
+    FATAL_PEDESTRIAN: 0
+    FROMDATE: 1314763200000
+    INTAPPROACHDIRECTION: "Southeast"
+    LASTUPDATEDATE: null
+    LATITUDE: 38.909889
+    LOCATIONERROR: null
+    LONGITUDE: -77.044887
+    MAJORINJURIESPASSENGER: 0
+    MAJORINJURIES_BICYCLIST: 0
+    MAJORINJURIES_DRIVER: 0
+    MAJORINJURIES_PEDESTRIAN: 0
+    MARID: 293218
+    MAR_ADDRESS: "2000 MASSACHUSETTS AVENUE NW"
+    MAR_SCORE: 100
+    MEASURE: 3004.72
+    MINORINJURIESPASSENGER: 0
+    MINORINJURIES_BICYCLIST: 0
+    MINORINJURIES_DRIVER: 0
+    MINORINJURIES_PEDESTRIAN: 0
+    MPDGEOX: null
+    MPDGEOY: null
+    MPDLATITUDE: null
+    MPDLONGITUDE: null
+    NEARESTINTROUTEID: "11002002"
+    NEARESTINTSTREETNAME: "20TH ST NW"
+    OBJECTID: 225033596
+    OFFINTERSECTION: 11.26
+    OFFSET: 25.69
+    PEDESTRIANSIMPAIRED: 0
+    REPORTDATE: 1314766800000
+    ROADWAYSEGID: 11805
+    ROUTEID: "11059602"
+    SPEEDING_INVOLVED: 0
+    STREETSEGID: 11386
+    SUBBLOCKKEY: "1d3cffb4c4fe0df4bb0e060bc8b23c8e"
+    TODATE: null
+    TOTAL_BICYCLES: 0
+    TOTAL_GOVERNMENT: 0
+    TOTAL_PEDESTRIANS: 0
+    TOTAL_TAXIS: 1
+    TOTAL_VEHICLES: 2
+    UNKNOWNINJURIESPASSENGER: 0
+    UNKNOWNINJURIES_BICYCLIST: 0
+    UNKNOWNINJURIES_DRIVER: 0
+    UNKNOWNINJURIES_PEDESTRIAN: 0
+    WARD: "Ward 2"
+    XCOORD: 396106.875
+    YCOORD: 138003.93
+
+    */
+    async function getData(url) {
+        const response = await fetch(url);
+        const data = await response.json();
+        // console.log(data.features);
+        const num1 = document.getElementById("ans1");
+        const num2 = document.getElementById("ans2");
+        const num3 = document.getElementById("ans3");
+        // const datamax = Math.max.apply(Math, data.features.map(function (o) {
+        //     return o.attributes.FATALPASSENGER;
+        // }));
+
+        //constants
+        // q1
+        var maxpassengers = 0;
+
+        // q2
+        var iterations = 0;
+        var avgspeed = 0;
+
+        // q3
+        var accidentswithcyclists = 0;
+
+        // q4
+        var region = "";
+        const arrayofregions = [];
+
+        data.features.map(data =>
+            maxpassengers = Math.max(maxpassengers, data.attributes.FATALPASSENGER));
+        num1.innerHTML = `<p> The number of passengers fataly wounded was ${maxpassengers}</p>`
+
+        data.features.map(function (data) {
+            if (data.attributes.SPEEDING_INVOLVED > 0) {
+                iterations++;
+                avgspeed = avgspeed + data.attributes.SPEEDING_INVOLVED;
+            }
+        });
+        num2.innerHTML = `<p> The average speed involved in the accidents was ${avgspeed/iterations} km/h</p>`
+
+        data.features.map(function (data) {
+            if (data.attributes.BICYCLISTSIMPAIRED > 0 | data.attributes.FATAL_BICYCLIST > 0 |
+                data.attributes.MAJORINJURIES_BICYCLIST > 0 | data.attributes.MINORINJURIES_BICYCLIST > 0 |
+                data.attributes.UNKNOWNINJURIES_BICYCLIST > 0) {
+                accidentswithcyclists++;
+            }
+        });
+        num3.innerHTML = `<p> There was a total of ${accidentswithcyclists} accidents with cyclists.</p>`
+
+        data.features.map(data =>
+            arrayofregions.add(data.attributes.address)
+        );
+
+        for (var i = 0; i < arrayofregions.length; i++) {
+
+        }
+    }
+</script>
+
+</html>
