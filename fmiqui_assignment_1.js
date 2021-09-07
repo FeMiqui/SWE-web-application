@@ -19,7 +19,7 @@
  
 // 7. Which street had the most number of accidents.
 
-// 8. In which day of the week most of the accidents happen?
+// 8. Which type of vehicle is more prone to be involved in accidents. (vehicles are being considering as cars)
 
 const https = require('https')
 const url = "https://opendata.arcgis.com/datasets/982f6bfb0888404db5c42cb1e8c70ed0_12.geojson";
